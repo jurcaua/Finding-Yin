@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour {
     private float groundRadius = 0.2f;
     public LayerMask whatIsGround;
 
+    public SpriteRenderer eye;
     public Transform projectileSpawn;
     public GameObject projectile;
     public float projectileSpeed = 10f;
+    [HideInInspector] public bool canShoot = true;
 
     private Rigidbody2D r;
     private Vector2 velocity;
@@ -33,16 +35,23 @@ public class PlayerController : MonoBehaviour {
             r.AddForce(new Vector2(0f, jumpForce));
         }
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            GameObject bullet = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as GameObject;
+        if (canShoot) { // they can shoot
+            if (Input.GetKeyDown(KeyCode.Space)) { // they can shoot and have shot
+                canShoot = false;
+                eye.enabled = false;
 
-            Rigidbody2D bulletR = bullet.GetComponent<Rigidbody2D>();
-            if (bulletR == null) {
-                Debug.Log("No Rigidbody2D on bullet! Problem!!!");
-                return;
+                GameObject bullet = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as GameObject;
+
+                Rigidbody2D bulletR = bullet.GetComponent<Rigidbody2D>();
+                if (bulletR == null) {
+                    Debug.Log("No Rigidbody2D on bullet! Problem!!!");
+                    return;
+                }
+
+                bulletR.velocity = new Vector2(facingRight * projectileSpeed, 0f);
+            } else { // they can shoot but arent
+                eye.enabled = true;
             }
-
-            bulletR.velocity = new Vector2(facingRight * projectileSpeed, 0f);
         }
 	}
 
