@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour {
 
         if (r.velocity.x != 0f) {
             facingRight = (int)Mathf.Sign(r.velocity.x);
-            s.flipX = (facingRight == 1) ? false: true ;
+            transform.localScale = new Vector3((facingRight == 1) ? 1 : -1, transform.localScale.y, transform.localScale.z);
         }
 
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
