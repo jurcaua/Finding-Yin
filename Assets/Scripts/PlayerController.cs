@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool grounded = true;
     public Transform groundCheck;
-    private float groundRadius = 0.2f;
+    private float groundRadius = 0.5f;
     public LayerMask whatIsGround;
 
     public SpriteRenderer eye;
@@ -23,11 +23,8 @@ public class PlayerController : MonoBehaviour {
     private Vector2 velocity;
     private int facingRight = 1;
 
-    private SpriteRenderer s;
-
     void Start () {
         r = GetComponent<Rigidbody2D>();
-        s = GetComponent <SpriteRenderer> ();
 	}
 	
 	void Update () {
