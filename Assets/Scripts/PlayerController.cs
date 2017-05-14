@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
     public Transform projectileSpawn;
     public GameObject projectile;
     public float projectileSpeed = 10f;
+    public float shotDelay = 0.1f;
     [HideInInspector] public bool canShoot = true;
 
     private Rigidbody2D r;
@@ -34,18 +35,7 @@ public class PlayerController : MonoBehaviour {
 
         if (canShoot) { // they can shoot
             if (Input.GetKeyDown(KeyCode.Space)) { // they can shoot and have shot
-                canShoot = false;
-                eye.enabled = false;
-
-                GameObject bullet = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as GameObject;
-
-                Rigidbody2D bulletR = bullet.GetComponent<Rigidbody2D>();
-                if (bulletR == null) {
-                    Debug.Log("No Rigidbody2D on bullet! Problem!!!");
-                    return;
-                }
-
-                bulletR.velocity = new Vector2(facingRight * projectileSpeed, 0f);
+                StartCoroutine(Shoot(shotDelay));
             } else { // they can shoot but arent
                 eye.enabled = true;
             }
@@ -61,5 +51,22 @@ public class PlayerController : MonoBehaviour {
         }
 
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+    }
+
+    IEnumerator Shoot(float delay) {
+        canShoot = false;
+
+        yield return new WaitForSeconds(delay);
+
+        eye.enabled = false;
+
+        GameObject bullet = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as GameObject;
+
+        Rigidbody2D bulletR = bullet.GetComponent<Rigidbody2D>();
+        if (bulletR == null) {
+            Debug.Log("No Rigidbody2D on bullet! Problem!!!");
+        } else {
+            bulletR.velocity = new Vector2(facingRight * projectileSpeed, 0f);
+        }
     }
 }

@@ -58,7 +58,6 @@ public class CameraController : MonoBehaviour {
 
             // find distance from the averaged out desired position
             Vector3 posToTarget = targetLocalPosition - desiredLocalPosition;
-            print(posToTarget);
 
             zoom = Mathf.Max(zoom, posToTarget.magnitude);
         }
