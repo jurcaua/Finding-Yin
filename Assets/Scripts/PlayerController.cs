@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool grounded = true;
     public Transform groundCheck;
+    public Transform[] groundChecks;
     private float groundRadius = 0.5f;
     public LayerMask whatIsGround;
 
@@ -50,7 +51,8 @@ public class PlayerController : MonoBehaviour {
             transform.localScale = new Vector3((facingRight == 1) ? 1 : -1, transform.localScale.y, transform.localScale.z);
         }
 
-        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        //grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
+        grounded = IsGrounded();
     }
 
     IEnumerator Shoot(float delay) {
@@ -68,5 +70,14 @@ public class PlayerController : MonoBehaviour {
         } else {
             bulletR.velocity = new Vector2(facingRight * projectileSpeed, 0f);
         }
+    }
+
+    bool IsGrounded() {
+        for (int i = 0; i < groundChecks.Length; i++) {
+            if (Physics2D.OverlapCircle(groundChecks[i].position, groundRadius, whatIsGround) == true) {
+                return true;
+            }
+        }
+        return false;
     }
 }
