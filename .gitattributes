@@ -15,3 +15,6 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+Finding-Yin/* linguist-documentation
+Assets/TextMesh Pro/ linguist-documentation=false
