@@ -6,11 +6,15 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     public Transform[] targets;
-    
+    public Transform topBorder;
+    public Transform bottomBorder;
+    public Transform leftBorder;
+    public Transform rightBorder;
+
     public float verticalOffset = 2f;
     public float dampTime = 0.2f;
     public float screenEdgeBuffer = 4f;
-    public float minZoom = 6.5f;
+    public float minZoom = 7.4f;
 
     private Camera cam;
 
@@ -27,9 +31,16 @@ public class CameraController : MonoBehaviour {
         desiredPosition = FindAveragePosition();
         transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref currentVelocity, dampTime);
 
-        desiredZoom = FindNeededZoom();
-        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, desiredZoom, ref currentZoomVelocity, dampTime);
-	}
+        transform.position = new Vector3
+            (
+                Mathf.Clamp(transform.position.x, leftBorder.localPosition.x, rightBorder.localPosition.x),
+                Mathf.Clamp(transform.position.y, bottomBorder.localPosition.y, topBorder.localPosition.y),
+                transform.position.z
+            );
+
+        //desiredZoom = FindNeededZoom();
+        //cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, desiredZoom, ref currentZoomVelocity, dampTime);
+    }
 
     Vector3 FindAveragePosition() {
         Vector3 averagePosition = Vector3.zero;
@@ -47,7 +58,7 @@ public class CameraController : MonoBehaviour {
 
     float FindNeededZoom() {
         // get local position of where we wana move
-        Vector3 desiredLocalPosition = transform.InverseTransformPoint(desiredPosition);
+        Vector3 desiredLocalPosition = transform.InverseTransformPoint(transform.position);
         desiredLocalPosition.z = 0f;
 
         float zoom = 0f;
@@ -64,7 +75,7 @@ public class CameraController : MonoBehaviour {
 
         zoom += screenEdgeBuffer;
 
-        zoom = Mathf.Max(zoom, minZoom);
+        zoom = Mathf.Min(zoom, minZoom);
 
         return zoom;
     }
