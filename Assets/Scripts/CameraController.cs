@@ -5,11 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Camera))]
 public class CameraController : MonoBehaviour {
 
-    public Transform[] targets;
-    public Transform topBorder;
-    public Transform bottomBorder;
-    public Transform leftBorder;
-    public Transform rightBorder;
+    private Transform[] targets;
+    private Transform topBorder;
+    private Transform bottomBorder;
+    private Transform leftBorder;
+    private Transform rightBorder;
 
     public float verticalOffset = 2f;
     public float dampTime = 0.2f;
@@ -22,24 +22,33 @@ public class CameraController : MonoBehaviour {
     private Vector3 desiredPosition;
     private float currentZoomVelocity;
     private float desiredZoom;
+
+    public bool finalMovement = false;
     
 	void Start () {
+        targets = new Transform[2];
+
         cam = GetComponent<Camera>();
-	}
+        targets[0] = GameObject.FindGameObjectWithTag("Yang").transform;
+        targets[1] = GameObject.FindGameObjectWithTag("Yin").transform;
+        topBorder = gameObject.transform.GetChild(0);
+        bottomBorder = gameObject.transform.GetChild(1);
+        leftBorder = gameObject.transform.GetChild(2);
+        rightBorder = gameObject.transform.GetChild(3);
+    }
 	
 	void Update () {
         desiredPosition = FindAveragePosition();
         transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref currentVelocity, dampTime);
 
-        transform.position = new Vector3
-            (
-                Mathf.Clamp(transform.position.x, leftBorder.localPosition.x, rightBorder.localPosition.x),
-                Mathf.Clamp(transform.position.y, bottomBorder.localPosition.y, topBorder.localPosition.y),
-                transform.position.z
-            );
-
-        //desiredZoom = FindNeededZoom();
-        //cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, desiredZoom, ref currentZoomVelocity, dampTime);
+        if (!finalMovement) {
+            transform.position = new Vector3
+                (
+                    Mathf.Clamp(transform.position.x, leftBorder.localPosition.x, rightBorder.localPosition.x),
+                    Mathf.Clamp(transform.position.y, bottomBorder.localPosition.y, topBorder.localPosition.y),
+                    transform.position.z
+                );
+        }
     }
 
     Vector3 FindAveragePosition() {
@@ -54,6 +63,17 @@ public class CameraController : MonoBehaviour {
         averagePosition.y += verticalOffset;
         averagePosition.z = transform.position.z;
         return averagePosition;
+    }
+
+    public void LevelOverMovement() {
+        verticalOffset = 0f;
+        screenEdgeBuffer = 1.25f;
+        desiredZoom = FindNeededZoom();
+        finalMovement = true;
+    }
+
+    public void Zoom() {
+        cam.orthographicSize = Mathf.SmoothDamp(cam.orthographicSize, desiredZoom, ref currentZoomVelocity, dampTime);
     }
 
     float FindNeededZoom() {

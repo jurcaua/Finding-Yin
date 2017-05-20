@@ -5,19 +5,35 @@ using TMPro;
 
 public class GameController : MonoBehaviour {
 
+    public static GameController instance = null;
+
     public TextMeshProUGUI text;
 
     private PlayerController playerController;
+    private CameraController cameraController;
     private bool levelComplete = false;
 
 	void Awake () {
-        playerController = GameObject.FindGameObjectWithTag("Yang").GetComponent<PlayerController>();
-
+        if (instance == null) {
+            instance = this;
+        } else if (instance != null) {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+    private void Start() {
+        playerController = GameObject.FindGameObjectWithTag("Yang").GetComponent<PlayerController>();
+        cameraController = GetComponent<CameraController>();
+    }
+
+    // Update is called once per frame
+    void Update () {
+		if (levelComplete) {
+            cameraController.LevelOverMovement(); // disables things to allow for final zoom in
+            cameraController.Zoom(); // zoom on targets
+            playerController.enabled = false; // disable movement for player
+        }
 	}
 
     public void LevelComplete() {
