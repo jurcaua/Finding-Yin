@@ -17,3 +17,4 @@
 *.RTF	 diff=astextplain
 
 Assets/TextMesh Pro/* linguist-vendored
+Assets/TextMesh Pro/Resources/* linguist-vendored
