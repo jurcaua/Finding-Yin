@@ -16,5 +16,4 @@
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
 
-Assets/* linguist-documentation
-TextMesh Pro/* linguist-documentation=false
+Assets/TextMesh Pro/* linguist-vendored
