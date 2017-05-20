@@ -16,5 +16,5 @@
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
 
-Assets/TextMesh Pro/* linguist-vendored
-Assets/TextMesh Pro/Resources/* linguist-vendored
+*.shader linguist-language=C#
+*.cginc linguist-language=C#
