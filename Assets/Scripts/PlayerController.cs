@@ -25,8 +25,11 @@ public class PlayerController : MonoBehaviour {
     private Vector2 velocity;
     private int facingRight = 1;
 
+    private GameController gameController;
+
     void Start () {
         r = GetComponent<Rigidbody2D>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
 	}
 	
 	void Update () {
