@@ -6,12 +6,21 @@ using UnityEngine.SceneManagement;
 public class LevelController : MonoBehaviour {
 
     public bool levelComplete = false;
+    public bool[] lanternsFound;
+    private int numLanterns;
 
     private PlayerController playerController;
     private CameraController cameraController;
     private Fader fader;
 
     void Start() {
+        numLanterns = GameObject.FindGameObjectsWithTag("Lantern").Length;
+
+        lanternsFound = new bool[numLanterns];
+        for (int i = 0; i < lanternsFound.Length; i++) {
+            lanternsFound[i] = false;
+        }
+
         playerController = GameObject.FindGameObjectWithTag("Yang").GetComponent<PlayerController>();
         cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         fader = GameObject.FindGameObjectWithTag("Fader").GetComponent<Fader>();
@@ -31,11 +40,18 @@ public class LevelController : MonoBehaviour {
         fader.FadeOut();
         levelComplete = true;
         playerController.enabled = false; // disable movement for player
+
+        GameController.instance.UpdateLanternSet(lanternsFound);
+
         Invoke("ReturnToLevelSelection", fader.fadeTime + 1f);
     }
 
     void ReturnToLevelSelection() {
         SceneManager.LoadScene("level_selection");
+    }
+
+    public void LanternCollected(int lanternIndex) {
+        lanternsFound[lanternIndex] = true;
     }
 
 }

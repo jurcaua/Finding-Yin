@@ -5,9 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class SelectLevel : MonoBehaviour {
 
-    public int levelNumber = 1;
+    public int levelNumber;
 
 	public void ChangeLevel() {
+        GameController.instance.currentLevel = levelNumber;
+
         SceneManager.LoadScene("level_" + levelNumber.ToString());
     }
 }
