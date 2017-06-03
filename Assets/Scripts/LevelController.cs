@@ -36,6 +36,12 @@ public class LevelController : MonoBehaviour {
         }
     }
 
+    public void RestartLevel() {
+        fader.FadeOut();
+
+        Invoke("ReloadCurrentLevel", fader.fadeTime + 1f);
+    }
+
     public void LevelComplete() {
         fader.FadeOut();
         levelComplete = true;
@@ -48,6 +54,10 @@ public class LevelController : MonoBehaviour {
 
     void ReturnToLevelSelection() {
         SceneManager.LoadScene("level_selection");
+    }
+
+    void ReloadCurrentLevel() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void LanternCollected(int lanternIndex) {
