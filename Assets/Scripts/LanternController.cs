@@ -13,7 +13,7 @@ public class LanternController : MonoBehaviour {
 	}
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "Yang") {
+        if (collision.gameObject.tag == "Yang" || collision.gameObject.tag == "Yin") {
             Destroy(gameObject);
 
             levelController.LanternCollected(lanternIndex);
