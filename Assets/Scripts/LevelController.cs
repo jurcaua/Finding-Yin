@@ -48,7 +48,9 @@ public class LevelController : MonoBehaviour {
         fader.FadeOut();
         levelComplete = true;
         playerController.enabled = false; // disable movement for player
-        playerControllerYin.enabled = false; // disable movement for yin
+        if (playerControllerYin != null) {
+            playerControllerYin.enabled = false; // disable movement for yin if this level allows for it
+        }
 
         GameController.instance.UpdateLanternSet(lanternsFound);
 
