@@ -10,6 +10,7 @@ public class LevelController : MonoBehaviour {
     private int numLanterns;
 
     private PlayerController playerController;
+    private PlayerController playerControllerYin;
     private CameraController cameraController;
     private Fader fader;
 
@@ -22,6 +23,7 @@ public class LevelController : MonoBehaviour {
         }
 
         playerController = GameObject.FindGameObjectWithTag("Yang").GetComponent<PlayerController>();
+        playerControllerYin = GameObject.FindGameObjectWithTag("Yin").GetComponent<PlayerController>();
         cameraController = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
         fader = GameObject.FindGameObjectWithTag("Fader").GetComponent<Fader>();
 
@@ -46,6 +48,7 @@ public class LevelController : MonoBehaviour {
         fader.FadeOut();
         levelComplete = true;
         playerController.enabled = false; // disable movement for player
+        playerControllerYin.enabled = false; // disable movement for yin
 
         GameController.instance.UpdateLanternSet(lanternsFound);
 
