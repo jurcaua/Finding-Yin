@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour {
     public float jumpForce = 5f;
 
     private bool grounded = true;
-    public Transform groundCheck;
     public Transform[] groundChecks;
     private float groundRadius = 0.5f;
     public LayerMask whatIsGround;
@@ -19,11 +18,11 @@ public class PlayerController : MonoBehaviour {
     public GameObject projectile;
     public float projectileSpeed = 10f;
     public float shotDelay = 0.1f;
-    [HideInInspector] public bool canShoot = true;
+    public bool canShoot = true;
 
     private Rigidbody2D r;
     private Vector2 velocity;
-    private int facingRight = 1;
+    public int facingRight = 1;
 
     void Start () {
         r = GetComponent<Rigidbody2D>();
@@ -49,6 +48,10 @@ public class PlayerController : MonoBehaviour {
         if (r.velocity.x != 0f) {
             facingRight = (int)Mathf.Sign(r.velocity.x);
             transform.localScale = new Vector3((facingRight == 1) ? 1 : -1, transform.localScale.y, transform.localScale.z);
+
+            if (gameObject.tag == "Yin") {
+                facingRight *= -1;
+            }
         }
 
         //grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
@@ -63,6 +66,7 @@ public class PlayerController : MonoBehaviour {
         eye.enabled = false;
 
         GameObject bullet = Instantiate(projectile, projectileSpawn.position, projectileSpawn.rotation) as GameObject;
+        bullet.GetComponent<ProjectileController>().player = this;
 
         Rigidbody2D bulletR = bullet.GetComponent<Rigidbody2D>();
         if (bulletR == null) {

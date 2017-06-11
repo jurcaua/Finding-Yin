@@ -9,14 +9,16 @@ public class ProjectileController : MonoBehaviour {
 
     private Vector3 startScale;
 
-    private PlayerController player;
+    [HideInInspector] public PlayerController player;
+    private SpriteRenderer eye;
 
     void Start () {
         Destroy(gameObject, projectileLifetime); // destroy this object after set lifetime
 
         startScale = new Vector3(transform.localScale.x, transform.localScale.y, transform.localScale.z); // keep track of current scale
 
-        player = GameObject.FindGameObjectWithTag("Yang").GetComponent<PlayerController>(); // find the player so we can alert when he can shoot again
+        eye = player.eye;
+        //player = GameObject.FindGameObjectWithTag("Yang").GetComponent<PlayerController>(); // find the player so we can alert when he can shoot again
     }
 
     void Update() {
@@ -27,9 +29,12 @@ public class ProjectileController : MonoBehaviour {
 
     void OnDestroy() {
         player.canShoot = true;
+        eye.enabled = true;
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        Destroy(gameObject);
+        if (collision.gameObject.layer != gameObject.layer) {
+            Destroy(gameObject);
+        }
     }
 }
