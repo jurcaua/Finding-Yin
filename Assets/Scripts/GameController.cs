@@ -39,5 +39,6 @@ public class GameController : MonoBehaviour {
         }
 
         Debug.Log("Level Index:" + currentLevel + " with lanterns: " + lanternsFound[0].ToString() + lanternsFound[1].ToString() + lanternsFound[2].ToString());
+        Debug.Log("Level Index:" + currentLevel + " with lanterns: " + lanterns[currentLevel - 1][0].ToString() + lanterns[currentLevel - 1][1].ToString() + lanterns[currentLevel - 1][2].ToString());
     }
 }
