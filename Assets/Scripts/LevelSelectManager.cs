@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class LevelSelectManager : MonoBehaviour {
 
-    public GameObject[] levelSelectBoxes;
+    public string levelSelectBoxTag;
+    private GameObject[] levelSelectBoxes;
 
     void Start() {
+        levelSelectBoxes = GameObject.FindGameObjectsWithTag(levelSelectBoxTag).OrderBy(go => go.name).ToArray();
+
         List<Image> lanternIcons;
         List<bool> updatedlanternIcons;
         for (int i = 0; i < levelSelectBoxes.Length; i++) {
