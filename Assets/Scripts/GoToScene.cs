@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GoToLevelSelect : MonoBehaviour {
+public class GoToScene : MonoBehaviour {
     
     public void GoToLevelSelection() {
         SceneManager.LoadScene("level_selection");
@@ -15,5 +15,9 @@ public class GoToLevelSelect : MonoBehaviour {
 
     public void GoToStartMenu() {
         SceneManager.LoadScene("start_menu");
+    }
+
+    public void RestartCurrentScene() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
